@@ -5,7 +5,7 @@ from sqlalchemy.exc import IntegrityError
 # Initialize SQLAlchemy
 db = SQLAlchemy()
 
-# Define the Restaurant model
+# Restaurant model
 class Restaurant(db.Model):
     __tablename__ = 'restaurants'
     
@@ -13,7 +13,7 @@ class Restaurant(db.Model):
     name = db.Column(db.String(50), unique=True, nullable=False)
     address = db.Column(db.String(255), nullable=False)
     
-    # Relationship with RestaurantPizza
+  
     restaurant_pizzas = db.relationship('RestaurantPizza', back_populates='restaurant', cascade='all, delete-orphan')
     
     def __repr__(self):
@@ -25,7 +25,7 @@ class Restaurant(db.Model):
         assert len(value) <= 50, "Name must be less than 50 characters"
         return value
 
-# Define the Pizza model
+# Pizza model
 class Pizza(db.Model):
     __tablename__ = 'pizzas'
     
@@ -33,13 +33,13 @@ class Pizza(db.Model):
     name = db.Column(db.String(50), nullable=False)
     ingredients = db.Column(db.String(255), nullable=False)
     
-    # Relationship with RestaurantPizza
+   
     restaurant_pizzas = db.relationship('RestaurantPizza', back_populates='pizza', cascade='all, delete-orphan')
     
     def __repr__(self):
         return f"<Pizza {self.id}: {self.name}>"
 
-# Define the RestaurantPizza model (join table)
+# RestaurantPizza model
 class RestaurantPizza(db.Model):
     __tablename__ = 'restaurant_pizzas'
     
@@ -48,7 +48,7 @@ class RestaurantPizza(db.Model):
     restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurants.id'), nullable=False)
     pizza_id = db.Column(db.Integer, db.ForeignKey('pizzas.id'), nullable=False)
     
-    # Relationships
+
     restaurant = db.relationship('Restaurant', back_populates='restaurant_pizzas')
     pizza = db.relationship('Pizza', back_populates='restaurant_pizzas')
     
